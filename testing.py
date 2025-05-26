@@ -1,8 +1,8 @@
 import whisper
 import subprocess
 
-model = whisper.load_model("turbo")
-result = model.transcribe("C:\\Users\\Yasser\\Documents\\Audacity\\ecommerce_part1.mp3")
+model = whisper.load_model("large")
+result = model.transcribe("C:\\Users\\Yasser\\Documents\\Audacity\\ecommerce_part2.mp3")
 
 def write_srt(result, output_path="output.srt"):
     def format_timestamp(seconds):
@@ -17,11 +17,13 @@ def write_srt(result, output_path="output.srt"):
             start = format_timestamp(segment["start"])
             end = format_timestamp(segment["end"])
             text = segment["text"].strip()
+            print(f"[{start} --> {end}]  {text}")
             f.write(f"{i}\n{start} --> {end}\n{text}\n\n")
 
 write_srt(result)
 print("✅ Transcripción completa. Archivo SRT guardado como 'output.srt'")
 
+'''
 path1="C:/Users/Yasser/Downloads/ecommerce_part1.mp4"
 path2="C:/Users/Yasser/Desktop/Proyecto_Whisper/subtitulado.mp4"
 path3=r"subtitles=C\\:/Users/Yasser/Desktop/Proyecto_Whisper/output.srt"
@@ -41,3 +43,4 @@ try:
     print("✅ Video generado con subtítulos incrustados.")
 except subprocess.CalledProcessError as e:
     print("❌ Error al ejecutar ffmpeg:", e)
+'''
