@@ -22,7 +22,7 @@ def write_srt(result, output_path="output.srt"):
 
 write_srt(result)
 print("✅ Transcripción completa. Archivo SRT guardado como 'output.srt'")
-
+####
 '''
 path1="C:/Users/Yasser/Downloads/ecommerce_part1.mp4"
 path2="C:/Users/Yasser/Desktop/Proyecto_Whisper/subtitulado.mp4"
