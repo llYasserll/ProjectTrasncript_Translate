@@ -3,9 +3,9 @@ import subprocess
 
 
 #model ia: tiny, base, small, medium, large, turbo
-def transcribe(aimodel, showOutputTranscribe, nameArchive):
+def transcribe(aimodel, path, showOutputTranscribe, nameArchive):
     model = whisper.load_model(aimodel)
-    result = model.transcribe("C:\\Users\\Yasser\\Documents\\Audacity\\ecommerce_part3.mp3", verbose=showOutputTranscribe)
+    result = model.transcribe(path, verbose=showOutputTranscribe)
 
     def write_srt(result, output_path=nameArchive):
         def format_timestamp(seconds):
@@ -26,9 +26,6 @@ def transcribe(aimodel, showOutputTranscribe, nameArchive):
     print(f"✅ Transcripción completa. Archivo SRT guardado como {nameArchive}")
 
 def subtitleVideo(path1, path2, path3):
-    path1="C:/Users/Yasser/Downloads/ecommerce_part1.mp4"
-    path2="C:/Users/Yasser/Desktop/Proyecto_Whisper/subtitulado.mp4"
-    path3=r"subtitles=C\\:/Users/Yasser/Desktop/Proyecto_Whisper/output.srt"
     comando = [
         "ffmpeg",
         "-i", f"{path1}",

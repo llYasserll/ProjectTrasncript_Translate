@@ -3,7 +3,7 @@ from moviepy.editor import VideoFileClip
 
 def cutVideo(videoPath, init, end):
     # Ruta del video original
-    videoPath = "C:\\Users\\Yasser\\Desktop\\Proyecto_Whisper\\video_1080p.mp4"
+    videoPath = "path de tu video"
 
     # Carga el video
     video = VideoFileClip(videoPath)
