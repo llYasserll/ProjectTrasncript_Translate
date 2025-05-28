@@ -1,46 +1,7 @@
-import whisper
-import subprocess
+from helpers.WhisperModel import transcribe
+from helpers.VideoDownload import downloadVideoWithoutAudio
+from helpers.VideoDownload import downloadAudio
 
-model = whisper.load_model("large")
-result = model.transcribe("C:\\Users\\Yasser\\Documents\\Audacity\\ecommerce_part2.mp3")
-
-def write_srt(result, output_path="output.srt"):
-    def format_timestamp(seconds):
-        hours = int(seconds // 3600)
-        minutes = int((seconds % 3600) // 60)
-        secs = int(seconds % 60)
-        millis = int((seconds - int(seconds)) * 1000)
-        return f"{hours:02}:{minutes:02}:{secs:02},{millis:03}"
-
-    with open(output_path, "w", encoding="utf-8") as f:
-        for i, segment in enumerate(result["segments"], start=1):
-            start = format_timestamp(segment["start"])
-            end = format_timestamp(segment["end"])
-            text = segment["text"].strip()
-            print(f"[{start} --> {end}]  {text}")
-            f.write(f"{i}\n{start} --> {end}\n{text}\n\n")
-
-write_srt(result)
-print("✅ Transcripción completa. Archivo SRT guardado como 'output.srt'")
-####
-'''
-path1="C:/Users/Yasser/Downloads/ecommerce_part1.mp4"
-path2="C:/Users/Yasser/Desktop/Proyecto_Whisper/subtitulado.mp4"
-path3=r"subtitles=C\\:/Users/Yasser/Desktop/Proyecto_Whisper/output.srt"
-comando = [
-    "ffmpeg",
-    "-i", f"{path1}",
-    "-vf", path3,
-    "-c:v", "h264_nvenc",
-    "-c:a", "copy",
-    f"{path2}"
-]
-
-print("Ejecutando comando:", " ".join(comando))
-
-try:
-    subprocess.run(comando, check=True)
-    print("✅ Video generado con subtítulos incrustados.")
-except subprocess.CalledProcessError as e:
-    print("❌ Error al ejecutar ffmpeg:", e)
-'''
+##downloadVideoWithoutAudio("https://www.youtube.com/watch?v=ZK4Jkf0y6lU")
+downloadAudio("https://www.youtube.com/watch?v=ZK4Jkf0y6lU")
+print("descargado")
