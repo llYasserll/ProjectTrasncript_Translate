@@ -1,43 +1,21 @@
-import whisper
-import subprocess
+from helpers.WhisperModel import transcribe
+from helpers.VideoDownload import downloadVideoWithoutAudio
+from helpers.VideoDownload import downloadAudio
+from helpers.WhisperModel import subtitleVideo
 
-model = whisper.load_model("turbo")
-result = model.transcribe("C:\\Users\\Yasser\\Documents\\Audacity\\ecommerce_part1.mp3")
+# descarga el audio
+downloadAudio("tu url")
+# descarga el video sin audio
+downloadVideoWithoutAudio("tu url")
+# transcribe tu audio
+# Escoge true para ver como se va transcribiendo o false para no ver
+transcribe("Tu modelo de IA","tu ruta absoluta de mp3", True, "nombre de tu archivo SRT")
 
-def write_srt(result, output_path="output.srt"):
-    def format_timestamp(seconds):
-        hours = int(seconds // 3600)
-        minutes = int((seconds % 3600) // 60)
-        secs = int(seconds % 60)
-        millis = int((seconds - int(seconds)) * 1000)
-        return f"{hours:02}:{minutes:02}:{secs:02},{millis:03}"
+# Subtitula el video
+subtitleVideo("ruta absoluta de tu archivo mp4", "ruta absoluta de ", r"subtitles=C\\:path del srt generado")
 
-    with open(output_path, "w", encoding="utf-8") as f:
-        for i, segment in enumerate(result["segments"], start=1):
-            start = format_timestamp(segment["start"])
-            end = format_timestamp(segment["end"])
-            text = segment["text"].strip()
-            f.write(f"{i}\n{start} --> {end}\n{text}\n\n")
+#TIPS
+#Para videos mas amplios es recomendable cortarlos para minimizar el tiempo si vas a usar el modelo de IA large
+#Tienes metodos en editvideo.py en la carpeta Helpers
 
-write_srt(result)
-print("✅ Transcripción completa. Archivo SRT guardado como 'output.srt'")
 
-path1="C:/Users/Yasser/Downloads/ecommerce_part1.mp4"
-path2="C:/Users/Yasser/Desktop/Proyecto_Whisper/subtitulado.mp4"
-path3=r"subtitles=C\\:/Users/Yasser/Desktop/Proyecto_Whisper/output.srt"
-comando = [
-    "ffmpeg",
-    "-i", f"{path1}",
-    "-vf", path3,
-    "-c:v", "h264_nvenc",
-    "-c:a", "copy",
-    f"{path2}"
-]
-
-print("Ejecutando comando:", " ".join(comando))
-
-try:
-    subprocess.run(comando, check=True)
-    print("✅ Video generado con subtítulos incrustados.")
-except subprocess.CalledProcessError as e:
-    print("❌ Error al ejecutar ffmpeg:", e)
