@@ -1,22 +1,15 @@
-from moviepy.editor import VideoFileClip
+from moviepy import *
 
 
-def cutVideo(videoPath, init, end):
-    # Ruta del video original
-    videoPath = "path de tu video"
-
+def cutVideo(videoPath, init, end, name):
     # Carga el video
     video = VideoFileClip(videoPath)
 
-    # Define el tiempo de corte (en segundos)
-    init = 10800     # 10 segundos
-    end = 12600        # 30 segundos
-
     # Recorta el video
-    video_cortado = video.subclip(init, end)
+    video_cortado = video.subclipped(init, end)
 
     # Guarda el video cortado
-    video_cortado.write_videofile("video_cortado.mp4", codec="libx264")
+    video_cortado.write_videofile(name, codec="libx264")
 
     # Cierra los clips para liberar recursos
     video.close()

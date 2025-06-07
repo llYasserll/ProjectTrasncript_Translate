@@ -1,5 +1,6 @@
 import whisper
 import subprocess
+from deep_translator import GoogleTranslator
 
 
 #model ia: tiny, base, small, medium, large, turbo
@@ -25,14 +26,14 @@ def transcribe(aimodel, path, showOutputTranscribe, nameArchive):
     write_srt(result)
     print(f"✅ Transcripción completa. Archivo SRT guardado como {nameArchive}")
 
-def subtitleVideo(path1, path2, path3):
+def subtitleVideo(path_input, path_output, vf_filter):
     comando = [
         "ffmpeg",
-        "-i", f"{path1}",
-        "-vf", path3,
+        "-i", path_input,
+        "-vf", vf_filter,
         "-c:v", "h264_nvenc",
         "-c:a", "copy",
-        f"{path2}"
+        path_output
     ]
 
     print("Ejecutando comando:", " ".join(comando))
@@ -42,3 +43,31 @@ def subtitleVideo(path1, path2, path3):
         print("✅ Video generado con subtítulos incrustados.")
     except subprocess.CalledProcessError as e:
         print("❌ Error al ejecutar ffmpeg:", e)
+
+def traducir_srt(ruta_entrada, ruta_salida):
+    traductor = GoogleTranslator(source='en', target='es')
+    lineas_traducidas = []
+
+    with open(ruta_entrada, 'r', encoding='utf-8') as archivo:
+        for linea in archivo:
+            linea = linea.strip()
+
+            # Evita traducir números de subtítulo y marcas de tiempo
+            if linea == "" or linea.isdigit() or "-->" in linea:
+                lineas_traducidas.append(linea)
+            else:
+                try:
+                    traduccion = traductor.translate(linea)
+                    if not traduccion:
+                        traduccion = linea
+                    lineas_traducidas.append(traduccion)
+                except Exception as e:
+                    print(f"Error traduciendo línea: {linea} -> {e}")
+                    lineas_traducidas.append(linea)
+
+    with open(ruta_salida, 'w', encoding='utf-8') as salida:
+        for linea in lineas_traducidas:
+            salida.write(linea + '\n')
+
+    print("✅ Traducción completada. Guardado en:", ruta_salida)
+
