@@ -7,7 +7,7 @@ from helpers.EditAudio import cutAudio
 from helpers.WhisperModel import traducir_srt
 
 # descarga el audio
-#downloadAudio("https://www.youtube.com/watch?v=o-fgWea75O4&t=1804s")
+#downloadAudio("src de youtube")
 # descarga el video
 #downloadVideo("src de youtube")
 # transcribe tu audio
